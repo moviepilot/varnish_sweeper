@@ -29,7 +29,8 @@ Gem::Specification.new do |s|
     "lib/varnish.rb",
     "lib/varnish_sweeper.rb",
     "spec/spec_helper.rb",
-    "spec/varnish_sweeper_spec.rb"
+    "spec/varnish_sweeper_spec.rb",
+    "varnish_sweeper.gemspec"
   ]
   s.homepage = %q{http://github.com/kesselborn/varnish_sweeper}
   s.licenses = ["MIT"]

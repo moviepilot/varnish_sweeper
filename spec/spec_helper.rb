@@ -1,3 +1,14 @@
+class ApplicationController
+end
+
+module ActionController
+  module Caching
+    class Sweeper
+    end
+  end
+end
+
+
 require 'varnish_sweeper'
 require 'rspec'
 

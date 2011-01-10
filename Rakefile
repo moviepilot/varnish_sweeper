@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/kesselborn/varnish_sweeper"
   gem.license = "MIT"
   gem.summary = %Q{A few helper functions that help caching web pages}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{hihih}
   gem.email = "daniel@moviepilot.com"
   gem.authors = ["Daniel Bornkessel"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

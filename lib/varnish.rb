@@ -22,7 +22,7 @@ protected
     return unless should_be_cached?(options)
 
     string_array = []
-    string_array << options[:private] ? "private" : "public"
+    string_array << (options[:private] ? "private" : "public")
 
     string_array << "max-age=%d"  % options[:max_age].to_i   if options[:max_age]
     string_array << "s-maxage=%d" % options[:s_max_age].to_i if options[:s_max_age]

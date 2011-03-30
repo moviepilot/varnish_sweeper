@@ -1,21 +1,27 @@
-class ApplicationController
-end
-
-module ActionController
-  module Caching
-    class Sweeper
-    end
-  end
-end
-
-
-require 'varnish_sweeper'
+require 'rubygems'
 require 'rspec'
+require 'rack'
+require 'ostruct'
+require "active_support"
+require 'varnish_sweeper'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+class ApplicationController
+  include Varnish
 
-RSpec.configure do |config|
-  
+  def headers
+    @headers ||= {}
+  end
+
+  def request
+    @request ||= OpenStruct.new(:headers => {})
+  end
+
+end
+
+class Rails
+
+  def self.cache
+    @@cache ||= ActiveSupport::Cache::MemoryStore.new
+  end
+
 end

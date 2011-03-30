@@ -1,4 +1,5 @@
 module Varnish
+
   def make_cacheable(options = {})
     if should_be_cached?(options)
       headers['Cache-Control'] = cache_control_text(options)
@@ -9,15 +10,20 @@ module Varnish
     end
   end
 
-  def sweep_cache_for(obj)
+  def sweep_cache_for(obj, options = {})
     return unless obj
     if cache_data = Rails.cache.read( varnish_cache_key(obj) )
       Rails.cache.delete( varnish_cache_key(obj) )
-      Resque.enqueue(SweeperJob, cache_data[:urls])
+      if options[:instant]
+        SweeperJob.perform(cache_data[:urls])
+      else
+        Resque.enqueue(SweeperJob, cache_data[:urls])
+      end
     end
   end
 
-protected
+  protected
+
   def cache_control_text(options)
     return unless should_be_cached?(options)
 

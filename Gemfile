@@ -8,7 +8,8 @@ source "http://rubygems.org"
 gem "resque"
 gem "resque-loner"
 gem "curb"
-#
+gem "activesupport", "2.3.10"
+
 group :development do
   gem "rspec", "~> 2.0.0"
   gem "yard", "~> 0.6.0"

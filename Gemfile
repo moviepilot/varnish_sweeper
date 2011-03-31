@@ -8,7 +8,6 @@ source "http://rubygems.org"
 gem "resque"
 gem "resque-loner"
 gem "curb"
-gem "activesupport", "2.3.10"
 
 group :development do
   gem "rspec", "~> 2.0.0"
@@ -16,4 +15,8 @@ group :development do
   gem "bundler", "~> 1.0.0"
   gem "jeweler", "~> 1.5.0.pre6"
   gem "rcov", ">= 0"
+end
+
+group :test do
+  gem "activesupport", "~> 2.3.11"
 end

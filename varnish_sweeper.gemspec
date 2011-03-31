@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Daniel Bornkessel"]
-  s.date = %q{2011-03-30}
-  s.description = %q{hihih}
-  s.email = %q{daniel@moviepilot.com}
+  s.authors = ["Daniel Bornkessel", "Tim Bleck"]
+  s.date = %q{2011-03-31}
+  s.description = %q{A few helper functions that help caching and sweeping web pages using varnish}
+  s.email = %q{developers@moviepilot.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -33,11 +33,11 @@ Gem::Specification.new do |s|
     "spec/varnish_sweeper/varnish_sweeper_spec.rb",
     "varnish_sweeper.gemspec"
   ]
-  s.homepage = %q{http://github.com/kesselborn/varnish_sweeper}
+  s.homepage = %q{http://github.com/moviepilot/varnish_sweeper}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.5.2}
-  s.summary = %q{A few helper functions that help caching web pages}
+  s.summary = %q{A few helper functions that help caching and sweeping web pages using varnish}
   s.test_files = [
     "spec/spec_helper.rb",
     "spec/varnish_sweeper/varnish_spec.rb",

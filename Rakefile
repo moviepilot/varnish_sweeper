@@ -13,12 +13,12 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "varnish_sweeper"
-  gem.homepage = "http://github.com/kesselborn/varnish_sweeper"
+  gem.homepage = "http://github.com/moviepilot/varnish_sweeper"
   gem.license = "MIT"
-  gem.summary = %Q{A few helper functions that help caching web pages}
-  gem.description = %Q{hihih}
-  gem.email = "daniel@moviepilot.com"
-  gem.authors = ["Daniel Bornkessel"]
+  gem.summary = %Q{A few helper functions that help caching and sweeping web pages using varnish}
+  gem.description = %Q{A few helper functions that help caching and sweeping web pages using varnish}
+  gem.email = "developers@moviepilot.com"
+  gem.authors = ["Daniel Bornkessel", "Tim Bleck"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'

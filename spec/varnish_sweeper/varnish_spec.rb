@@ -70,5 +70,28 @@ describe Varnish do
     end
 
   end
+  
+  describe :sweep_cache_for do
+
+    before do
+      @obj = mock('Model')
+      @controller.stub!(:varnish_cache_key).with(@obj).and_return("cache_key")
+    end
+    
+    context 'sweeping a defined urls (with option :urls => [url,url])' do
+      
+      it "should sweep normal cache + optional urls" do
+        SweeperJob.should_receive(:perform).with(["urla","urlb"])
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => ["urla","urlb"])
+      end
+      
+      it "should sweep normal cache + optional urls" do
+        Resque.should_receive(:enqueue).with(SweeperJob, ["urla","urlb"])
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
+      end
+      
+    end
+
+  end
 
 end

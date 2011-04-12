@@ -1,6 +1,10 @@
 = varnish_sweeper
 
-Description goes here.
+sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
+
+options :
+* :instant = false > enqueue in resque , true > instant sweep 
+* :urls = additional urls to sweep
 
 == Contributing to varnish_sweeper
  

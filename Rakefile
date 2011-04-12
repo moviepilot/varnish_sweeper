@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{A few helper functions that help caching and sweeping web pages using varnish}
   gem.description = %Q{A few helper functions that help caching and sweeping web pages using varnish}
   gem.email = "developers@moviepilot.com"
-  gem.authors = ["Daniel Bornkessel", "Tim Bleck"]
+  gem.authors = ["Daniel Bornkessel", "Tim Bleck", "Helmut Ebritsch", "Christoph Grabo"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'

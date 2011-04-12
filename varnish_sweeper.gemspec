@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{varnish_sweeper}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Daniel Bornkessel", "Tim Bleck"]
-  s.date = %q{2011-03-31}
+  s.authors = ["Daniel Bornkessel", "Tim Bleck", "Helmut Ebritsch", "Christoph Grabo"]
+  s.date = %q{2011-04-12}
   s.description = %q{A few helper functions that help caching and sweeping web pages using varnish}
   s.email = %q{developers@moviepilot.com}
   s.extra_rdoc_files = [

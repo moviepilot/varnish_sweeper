@@ -12,12 +12,14 @@ module Varnish
 
   def sweep_cache_for(obj, options = {})
     return unless obj
+    # cache_data is a frozen hash
     if cache_data = Rails.cache.read( varnish_cache_key(obj) )
       Rails.cache.delete( varnish_cache_key(obj) )
+      urls = cache_data[:urls] + options[:urls].to_a
       if options[:instant]
-        SweeperJob.perform(cache_data[:urls])
+        SweeperJob.perform(urls)
       else
-        Resque.enqueue(SweeperJob, cache_data[:urls])
+        Resque.enqueue(SweeperJob, urls)
       end
     end
   end

@@ -54,6 +54,20 @@ describe Varnish do
       end
 
     end
+    
+    context 'sweeping a defined urls (with option :urls => [url,url])' do
+      
+      it "should sweep normal cache + optional urls" do
+        SweeperJob.should_receive(:perform).with(["cached_url"]+["urla","urlb"])
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => ["urla","urlb"])
+      end
+      
+      it "should sweep normal cache + optional urls" do
+        Resque.should_receive(:enqueue).with(SweeperJob, ["cached_url"]+["urla","urlb"])
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
+      end
+      
+    end
 
   end
 

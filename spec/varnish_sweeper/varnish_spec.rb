@@ -90,6 +90,11 @@ describe Varnish do
         @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
       end
       
+      it "should sweep normal cache + optional urls" do
+        Resque.should_receive(:enqueue).with(SweeperJob, ["urla","urlb"])
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"]).should == ["urla","urlb"]
+      end
+      
     end
 
   end

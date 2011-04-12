@@ -26,6 +26,7 @@ module Varnish
       else
         Resque.enqueue(SweeperJob, urls)
       end
+      urls
     end
   end
 

@@ -1,5 +1,9 @@
 = varnish_sweeper
 
+This gem adds a method for sweeping cache of already cached and/or self-defined URLs.
+
+Also some other helpers are defined for sweeping.
+
 sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
 
 options :

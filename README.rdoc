@@ -1,4 +1,4 @@
-= varnish_sweeper
+= varnish_sweeper http://travis-ci.org/asaaki/varnish_sweeper.png
 
 This gem adds a method for sweeping cache of already cached and/or self-defined URLs.
 

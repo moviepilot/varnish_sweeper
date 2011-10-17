@@ -12,22 +12,27 @@ module Varnish
 
   def sweep_cache_for(obj, options = {})
     return unless obj
-    # cache_data is a frozen hash
-    if (cache_data = Rails.cache.read( varnish_cache_key(obj))) || options[:urls]
+    urls = []
+    
+    if cache_data = Rails.cache.read( varnish_cache_key(obj))
       Rails.cache.delete( varnish_cache_key(obj) )
-      if cache_data
-        urls = cache_data[:urls].to_a + options[:urls].to_a
-      else
-        urls = options[:urls].to_a
-      end
+      urls += cache_data[:urls].to_a # .to_a: to prevent nil
+    end 
       
-      if options[:instant]
-        SweeperJob.perform(urls)
-      else
-        Resque.enqueue(SweeperJob, urls)
-      end
-      urls
+    if options[:urls]
+      urls += options[:urls]
     end
+    
+    # removing duplicates before sweeping to reduce unnecessary overhead
+    urls.uniq!
+    
+    if options[:instant]
+      SweeperJob.perform(urls)
+    else
+      Resque.enqueue(SweeperJob, urls)
+    end
+    # always return urls array
+    urls
   end
 
   protected

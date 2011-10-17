@@ -29,18 +29,20 @@ describe Varnish do
 
   end
 
-  describe :sweep_cache_for do
+  describe :sweep_cache_for, "with cached url" do
 
     before do
       @obj = mock('Model')
       @controller.stub!(:varnish_cache_key).with(@obj).and_return("cache_key")
-      Rails.cache.write("cache_key", :urls => ["cached_url"])
+      @cached_urls = ["cached_url","cached_url_b"]
+      @opt_urls = ["url_a","url_b","cached_url_b"]
+      Rails.cache.write("cache_key", :urls => @cached_urls)
     end
 
     context 'asynchronous sweeping (default)' do
 
       it "should enqueue the sweeping job with resque" do
-        Resque.should_receive(:enqueue).with(SweeperJob, ["cached_url"])
+        Resque.should_receive(:enqueue).with(SweeperJob, @cached_urls)
         @controller.sweep_cache_for(@obj)
       end
 
@@ -49,50 +51,66 @@ describe Varnish do
     context 'instant sweeping (with option :instant => true)' do
 
       it "should sweep the cache instantly" do
-        SweeperJob.should_receive(:perform).with(["cached_url"])
+        SweeperJob.should_receive(:perform).with(@cached_urls)
         @controller.sweep_cache_for(@obj, :instant => true)
       end
 
     end
     
-    context 'sweeping a defined urls (with option :urls => [url,url])' do
+    context 'sweeping cached and self-defined urls (with option :urls => @opt_urls)' do
       
-      it "should sweep normal cache + optional urls" do
-        SweeperJob.should_receive(:perform).with(["cached_url"]+["urla","urlb"])
-        @controller.sweep_cache_for(@obj, :instant => true, :urls => ["urla","urlb"])
+      it "should sweep normal cache + optional urls, :instant => true" do
+        SweeperJob.should_receive(:perform).with( (@cached_urls+@opt_urls).uniq )
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => @opt_urls)
       end
       
-      it "should sweep normal cache + optional urls" do
-        Resque.should_receive(:enqueue).with(SweeperJob, ["cached_url"]+["urla","urlb"])
-        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
+      it "should sweep normal cache + optional urls, :instant => true, return value check" do
+        SweeperJob.should_receive(:perform).with( (@cached_urls+@opt_urls).uniq )
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => @opt_urls).should == (@cached_urls+@opt_urls).uniq
+      end
+      
+      it "should sweep normal cache + optional urls, :instant => false" do
+        Resque.should_receive(:enqueue).with(SweeperJob, (@cached_urls+@opt_urls).uniq )
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => @opt_urls)
+      end
+      
+      it "should sweep normal cache + optional urls, :instant => false, return value check" do
+        Resque.should_receive(:enqueue).with(SweeperJob, (@cached_urls+@opt_urls).uniq )
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => @opt_urls).should == (@cached_urls+@opt_urls).uniq
       end
       
     end
 
   end
   
-  describe :sweep_cache_for do
+  describe :sweep_cache_for, "without cached url" do
 
     before do
       @obj = mock('Model')
       @controller.stub!(:varnish_cache_key).with(@obj).and_return("cache_key")
+      @opt_urls = ["url_c","url_d"]
     end
     
-    context 'sweeping a defined urls (with option :urls => [url,url])' do
+    context 'sweeping self-defined urls only (with option :urls => @opt_urls)' do
       
-      it "should sweep normal cache + optional urls" do
-        SweeperJob.should_receive(:perform).with(["urla","urlb"])
-        @controller.sweep_cache_for(@obj, :instant => true, :urls => ["urla","urlb"])
+      it "should sweep optional urls only, :instant => true" do
+        SweeperJob.should_receive(:perform).with(@opt_urls)
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => @opt_urls)
       end
       
-      it "should sweep normal cache + optional urls" do
-        Resque.should_receive(:enqueue).with(SweeperJob, ["urla","urlb"])
-        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"])
+      it "should sweep optional urls only, :instant => true, return value check" do
+        SweeperJob.should_receive(:perform).with(@opt_urls)
+        @controller.sweep_cache_for(@obj, :instant => true, :urls => @opt_urls).should == @opt_urls
       end
       
-      it "should sweep normal cache + optional urls" do
-        Resque.should_receive(:enqueue).with(SweeperJob, ["urla","urlb"])
-        @controller.sweep_cache_for(@obj, :instant => false, :urls => ["urla","urlb"]).should == ["urla","urlb"]
+      it "should sweep optional urls only, :instant => false" do
+        Resque.should_receive(:enqueue).with(SweeperJob, @opt_urls)
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => @opt_urls)
+      end
+      
+      it "should sweep optional urls only, :instant => false, return value check" do
+        Resque.should_receive(:enqueue).with(SweeperJob, @opt_urls)
+        @controller.sweep_cache_for(@obj, :instant => false, :urls => @opt_urls).should == @opt_urls
       end
       
     end

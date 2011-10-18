@@ -18,5 +18,5 @@ group :development do
 end
 
 group :test do
-  gem "activesupport", "~> 2.3.11"
+  gem "activesupport", ">= 2.3.11"
 end

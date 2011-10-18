@@ -1,4 +1,5 @@
 module Varnish
+  extend self
 
   def make_cacheable(options = {})
     if should_be_cached?(options)
@@ -13,26 +14,29 @@ module Varnish
   def sweep_cache_for(obj, options = {})
     return unless obj
     urls = []
-    
+
     if cache_data = Rails.cache.read( varnish_cache_key(obj))
       Rails.cache.delete( varnish_cache_key(obj) )
       urls += cache_data[:urls].to_a # .to_a: to prevent nil
-    end 
-      
+    end
+
     if options[:urls]
       urls += options[:urls]
     end
-    
+
     # removing duplicates before sweeping to reduce unnecessary overhead
     urls.uniq!
-    
-    if options[:instant]
-      SweeperJob.perform(urls)
-    else
-      Resque.enqueue(SweeperJob, urls)
-    end
+
+    # Sweep 'em
+    sweep_urls urls, options[:instant]
+
     # always return urls array
     urls
+  end
+
+  def sweep_urls(urls, instant = false)
+    return SweeperJob.perform(urls) if instant
+    Resque.enqueue(SweeperJob, urls)
   end
 
   protected
@@ -79,6 +83,6 @@ module Varnish
   def varnish_cache_key(obj)
     "varnish_cw_#{obj.class_name}_#{obj.hash}"
   end
-    
+
 end
 

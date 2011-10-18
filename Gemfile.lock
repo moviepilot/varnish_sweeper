@@ -45,7 +45,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 2.3.11)
+  activesupport (>= 2.3.11)
   bundler (~> 1.0.0)
   curb
   jeweler (~> 1.5.0.pre6)
